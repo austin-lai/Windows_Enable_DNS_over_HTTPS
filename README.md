@@ -11,6 +11,7 @@
 ---
 
 ## Table of Contents
+
 <!-- TOC -->
 
 - [Windows 11 to enable DNS over HTTPS](#windows-11-to-enable-dns-over-https)
@@ -23,6 +24,7 @@
     - [Enforce DNS over HTTPS using powershell command to modify registry and GPO](#enforce-dns-over-https-using-powershell-command-to-modify-registry-and-gpo)
 
 <!-- /TOC -->
+
 <br>
 
 ## Disclaimer
@@ -40,6 +42,8 @@ This project/repository is for <span style="color: red; font-weight: bold;">Educ
 <!-- Description -->
 
 Note for Windows 11 to enable DNS over HTTPS
+
+<!-- /Description -->
 
 <br>
 
