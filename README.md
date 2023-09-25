@@ -51,7 +51,7 @@ You can create a batch file (enable_DoH.bat) or execute the command in Command P
 
 The `enable_DoH.bat` file can be found [here](./enable_DoH.bat) or below:
 
-```batch
+```bat
 @REM This to check if DoH status
 netsh dns show global
 
@@ -226,8 +226,7 @@ Get-Item -path "\Software\Policies\Microsoft\Windows NT\DNSClient" | Select-Obje
 
 <br>
 
-The `enforce_DoH.ps1` file can be found [here](./
-enforce_DoH.ps1) or below:
+The `enforce_DoH.ps1` file can be found [here](./enforce_DoH.ps1) or below:
 
 <details>
 
