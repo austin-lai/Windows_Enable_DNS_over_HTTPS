@@ -5,7 +5,7 @@ netsh dns show global
 netsh dns show encryption
 
 @REM Enable DoH
-netsh dns add global dot=yes
+netsh dns add global doh=yes
 
 @REM Adding First DoH Server
 netsh dns add encryption server=8.8.8.8 dohtemplate=https://dns.google/dns-query autoupgrade=yes udpfallback=no
