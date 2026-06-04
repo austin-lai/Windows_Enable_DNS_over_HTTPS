@@ -22,6 +22,7 @@
         - [Method 1 - Enable DNS over HTTPS using netsh command](#method-1---enable-dns-over-https-using-netsh-command)
         - [Method 2 - Enable DNS over HTTPS using powershell command](#method-2---enable-dns-over-https-using-powershell-command)
     - [Enforce DNS over HTTPS using powershell command to modify registry and GPO](#enforce-dns-over-https-using-powershell-command-to-modify-registry-and-gpo)
+    - [Updated fix posted - 05 June 2026](#Updated-fix-posted---05-June-2026)
 
 <!-- /TOC -->
 
@@ -267,3 +268,42 @@ if ((Test-Path -Path "HKLM:\Software\Policies\Microsoft\Windows NT\DNSClient") -
 
 <br>
 
+## Updated fix posted - 05 June 2026
+
+I believe Windows 11 has recently added registry support for configuring DoH more directly, whereas previously I could only set the template. 
+
+I’ve tested this in my lab environment using PowerShell + Registry.
+
+Key point -> this likely means the script needs an update:
+
+1. Register the templates into the global Windows known DoH list
+
+    ```powershell
+    Add-DnsClientDohServerAddress -ServerAddress "94.140.14.14" -DohTemplate "https://dns.adguard-dns.com/dns-query" -AllowFallbackToUdp $False -AutoUpgrade $True
+    ```
+    
+    > - Use `Get-DnsClient | Select-Object InterfaceAlias` - to get  InterfaceAlias for the network adapter
+    > - Use `Get-NetAdapter` - to get the unique GUID for the network adapter
+
+2. Assign the DNS servers to the network adapter
+
+    ```powershell
+    Set-DnsClientServerAddress -InterfaceAlias [InterfaceAlias] -ServerAddresses 94.140.14.14
+    ```
+    
+3. Force the registry flags for the network adapter to activate encryption
+    
+      $regPath = 
+      ```
+      HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\[YOUR_INTERFACE_GUID]\DohInterfaceSettings\Doh\94.140.14.14
+      ```
+      
+      Set DohFlags to 1 (Enables Automatic DoH Template)
+      ```
+      New-ItemProperty -Path $regPath -Name "DohFlags" -Value 1 -PropertyType QWORD -Force
+      ```
+
+
+Updated fix posted above -> If you find it useful, feel free to fork, adapt, integrate it into your own implementation, or submit a PR if you’d like it integrated upstream.
+
+P.S. -> Let me know if the fix I posted above is helpful or if anything needs adjusting.
